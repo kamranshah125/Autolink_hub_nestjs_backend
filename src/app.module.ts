@@ -3,6 +3,11 @@ import { ConfigModule } from '@nestjs/config';
 import { AppController } from './modules/app.controller';
 import { AppService } from './modules/app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AuthModule } from './modules/auth/auth.module';
+import { User } from './modules/users/entities/user.entity';
+import { DealerProfile } from './modules/users/entities/dealer-profile.entity';
+import { UsersModule } from './modules/users/users.module';
+
 
 @Module({
   imports: [
@@ -15,8 +20,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       autoLoadEntities: true,
       synchronize: true,
     }),
+    TypeOrmModule.forFeature([User, DealerProfile]),
+    AuthModule,
+    UsersModule,
+     
   ],
   controllers: [AppController],
   providers: [AppService],
+
 })
 export class AppModule {}
