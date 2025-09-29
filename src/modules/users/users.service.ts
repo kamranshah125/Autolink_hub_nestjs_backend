@@ -60,4 +60,6 @@ export class UsersService {
     profile.status = status;
     return this.dealerRepo.save(profile);
   }
+  
+
 }
