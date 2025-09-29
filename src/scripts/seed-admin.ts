@@ -2,7 +2,7 @@
 import { DataSource } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import * as dotenv from 'dotenv';
-import { User } from 'src/modules/users/entities/user.entity';
+import { User } from '@/modules/users/entities/user.entity';
 dotenv.config();
 
 const ds = new DataSource({

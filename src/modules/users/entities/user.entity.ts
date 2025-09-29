@@ -1,7 +1,7 @@
-// src/entities/user.entity.ts
+ 
 import { Entity, PrimaryGeneratedColumn, Column, OneToOne } from 'typeorm';
 import { DealerProfile } from './dealer-profile.entity';
-
+ 
 export type UserRole = 'admin' | 'dealer' | 'sub-user';
 
 @Entity()

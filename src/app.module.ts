@@ -7,8 +7,8 @@ import { AuthModule } from './modules/auth/auth.module';
 import { User } from './modules/users/entities/user.entity';
 import { DealerProfile } from './modules/users/entities/dealer-profile.entity';
 import { UsersModule } from './modules/users/users.module';
-
-
+import { SubscriptionsModule } from './modules/subscriptions/subscriptions.module';
+ 
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -23,6 +23,7 @@ import { UsersModule } from './modules/users/users.module';
     TypeOrmModule.forFeature([User, DealerProfile]),
     AuthModule,
     UsersModule,
+    SubscriptionsModule,
      
   ],
   controllers: [AppController],

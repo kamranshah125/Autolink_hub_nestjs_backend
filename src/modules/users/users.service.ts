@@ -54,8 +54,8 @@ export class UsersService {
     return this.usersRepo.save(user);
   }
 
-  async setDealerStatus(dealerId: number, status: 'pending' | 'approved' | 'rejected') {
-    const profile = await this.dealerRepo.findOne({ where: { id: dealerId }, relations: ['user'] });
+  async setDealerStatus(userId: number, status: 'pending' | 'approved' | 'rejected') {
+    const profile = await this.dealerRepo.findOne({ where: { id: userId }, relations: ['user'] });
     if (!profile) throw new NotFoundException('Dealer profile not found');
     profile.status = status;
     return this.dealerRepo.save(profile);
