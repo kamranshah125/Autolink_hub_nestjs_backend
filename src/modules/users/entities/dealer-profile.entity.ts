@@ -18,6 +18,9 @@ export class DealerProfile {
   @Column({ default: 'pending' })
   status: 'pending' | 'approved' | 'rejected';
 
+  @Column({ nullable: true })
+  kycDocumentPath: string; 
+
   // Relation back to User
   @OneToOne(() => User, (user) => user.dealerProfile, { eager: true })
   @JoinColumn()

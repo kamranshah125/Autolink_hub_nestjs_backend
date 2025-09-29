@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { DealerProfile } from '../users/entities/dealer-profile.entity';
@@ -10,10 +10,33 @@ export class DealersService {
     private dealerRepo: Repository<DealerProfile>,
   ) {}
 
-  async findPending() {
+  async findByStatus(status?: string) {
+  if (!status || status === 'all') {
+    // Return ALL dealers regardless of status
     return this.dealerRepo.find({
-      where: { status: 'pending' },
-      relations: ['user'], // fetch related user info
+      relations: ['user'],
     });
   }
+
+  // Return filtered by status
+  return this.dealerRepo.find({
+    where: { status: status as 'pending' | 'approved' | 'rejected' },
+    relations: ['user'],
+  });
+}
+async saveKycDocument(dealerId: number, filePath: string) {
+    // 👇 Ensure dealer exists
+    const dealer = await this.dealerRepo.findOne({
+      where: { user: { id: dealerId } },
+      relations: ['user'],
+    });
+
+    if (!dealer) {
+      throw new NotFoundException(`Dealer with ID ${dealerId} not found`);
+    }
+
+    dealer.kycDocumentPath = filePath;
+    return this.dealerRepo.save(dealer);
+  }
+
 }
