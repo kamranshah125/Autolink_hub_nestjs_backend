@@ -8,8 +8,8 @@ import { User } from './modules/users/entities/user.entity';
 import { DealerProfile } from './modules/users/entities/dealer-profile.entity';
 import { UsersModule } from './modules/users/users.module';
 import { SubscriptionsModule } from './modules/subscriptions/subscriptions.module';
- 
-@Module({
+import { DealersModule } from './modules/dealers/dealers.module';
+ @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true, 
@@ -24,7 +24,8 @@ import { SubscriptionsModule } from './modules/subscriptions/subscriptions.modul
     AuthModule,
     UsersModule,
     SubscriptionsModule,
-     
+    DealersModule, 
+ 
   ],
   controllers: [AppController],
   providers: [AppService],

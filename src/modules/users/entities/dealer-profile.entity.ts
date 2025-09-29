@@ -1,27 +1,28 @@
-// src/entities/dealer-profile.entity.ts
 import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from 'typeorm';
 import { User } from './user.entity';
-
-export type DealerStatus = 'pending' | 'approved' | 'rejected';
 
 @Entity()
 export class DealerProfile {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ nullable: true })
+  @Column()
   companyName: string;
 
-  @Column({ nullable: true })
+  @Column()
   taxId: string;
 
-  @Column({ nullable: true })
+  @Column()
   bankDetails: string;
 
-  @Column({ type: 'varchar', default: 'pending' })
-  status: DealerStatus;
+  @Column({ default: 'pending' })
+  status: 'pending' | 'approved' | 'rejected';
 
-  @OneToOne(() => User, (user) => user.dealerProfile)
+  @Column({ nullable: true })
+  kycDocumentPath: string; 
+
+  // Relation back to User
+  @OneToOne(() => User, (user) => user.dealerProfile, { eager: true })
   @JoinColumn()
   user: User;
 }

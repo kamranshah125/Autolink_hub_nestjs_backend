@@ -1,4 +1,3 @@
- 
 import { Entity, PrimaryGeneratedColumn, Column, OneToOne } from 'typeorm';
 import { DealerProfile } from './dealer-profile.entity';
  
