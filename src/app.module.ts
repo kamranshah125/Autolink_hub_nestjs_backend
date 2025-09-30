@@ -9,6 +9,8 @@ import { DealerProfile } from './modules/users/entities/dealer-profile.entity';
 import { UsersModule } from './modules/users/users.module';
 import { SubscriptionsModule } from './modules/subscriptions/subscriptions.module';
 import { DealersModule } from './modules/dealers/dealers.module';
+import { PurchaseRequestsModule } from './modules/purchase-requests/purchase-requests.module';
+ 
  @Module({
   imports: [
     ConfigModule.forRoot({
@@ -24,8 +26,9 @@ import { DealersModule } from './modules/dealers/dealers.module';
     AuthModule,
     UsersModule,
     SubscriptionsModule,
-    DealersModule, 
- 
+    DealersModule,
+    PurchaseRequestsModule,
+
   ],
   controllers: [AppController],
   providers: [AppService],
