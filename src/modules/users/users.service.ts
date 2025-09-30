@@ -4,6 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 import { DealerProfile } from './entities/dealer-profile.entity';
+import { randomBytes } from 'crypto';
 
 @Injectable()
 export class UsersService {
@@ -35,6 +36,10 @@ export class UsersService {
       dealerProfile,
     });
 
+    // generate email verification token
+    user.emailVerificationToken = randomBytes(32).toString('hex');
+    user.emailVerificationExpires = new Date(Date.now() + 1000 * 60 * 60 * 24); // 24h
+
     return this.usersRepo.save(user);
   }
 
@@ -49,6 +54,12 @@ export class UsersService {
     return this.usersRepo.findOne({ where: { id }, relations: ['dealerProfile'] });
   }
 
+  async findByVerificationToken(token: string) {
+    return this.usersRepo.findOne({
+      where: { emailVerificationToken: token },
+    });
+  }
+
   async createAdmin(data: { name: string; email: string; password: string }) {
     const user = this.usersRepo.create({ ...data, role: 'admin' });
     return this.usersRepo.save(user);
@@ -60,6 +71,8 @@ export class UsersService {
     profile.status = status;
     return this.dealerRepo.save(profile);
   }
-  
 
+  async save(user: User) {
+    return this.usersRepo.save(user);
+  }
 }

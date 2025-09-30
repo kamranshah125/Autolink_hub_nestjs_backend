@@ -15,11 +15,20 @@ export class DealerProfile {
   @Column()
   bankDetails: string;
 
+  @Column({ nullable: true })
+  country: string;
+
   @Column({ default: 'pending' })
   status: 'pending' | 'approved' | 'rejected';
 
-  @Column({ nullable: true })
-  kycDocumentPath: string; 
+ @Column({ nullable: true })
+  rejectionReason: string;
+  
+ @Column('json', { nullable: true })
+  documents: {
+    type: string; 
+    path: string;
+  }[]; 
 
   // Relation back to User
   @OneToOne(() => User, (user) => user.dealerProfile, { eager: true })
