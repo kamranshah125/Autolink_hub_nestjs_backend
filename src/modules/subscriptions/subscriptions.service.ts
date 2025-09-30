@@ -82,11 +82,25 @@ export class SubscriptionsService {
     });
   }
 
-  // ===============================
+   // ===============================
   // 📌 Admin Side
   // ===============================
 
-  // Admin: get all pending invoices
+  async getAllSubscriptions() {
+    return this.subsRepo.find({
+      relations: ['plan'],
+      order: { startDate: 'DESC' },
+    });
+  }
+
+  async getSubscriptionsByStatus(status: string) {
+    return this.subsRepo.find({
+      where: { status:status as any },
+      relations: ['plan'],
+      order: { startDate: 'DESC' },
+    });
+  }
+
   async getPendingInvoices() {
     return this.invoicesRepo.find({
       where: { status: 'pending' },
@@ -94,7 +108,6 @@ export class SubscriptionsService {
     });
   }
 
-  // Admin: verify invoice
   async verifyInvoice(invoiceId: number, status: 'paid' | 'rejected') {
     const invoice = await this.invoicesRepo.findOne({
       where: { id: invoiceId },
@@ -105,7 +118,6 @@ export class SubscriptionsService {
     invoice.status = status;
     await this.invoicesRepo.save(invoice);
 
-    // agar invoice paid hai to subscription active kar do
     if (status === 'paid' && invoice.subscription) {
       invoice.subscription.status = 'active';
       await this.subsRepo.save(invoice.subscription);

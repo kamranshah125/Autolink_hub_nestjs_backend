@@ -57,18 +57,26 @@ export class SubscriptionsController {
   // 📌 Admin Side Endpoints
   // ===============================
 
+  // Admin: get all subscriptions
+  @Get('admin/all')
+  async getAllSubscriptions() {
+    return this.subscriptionsService.getAllSubscriptions();
+  }
+
+  // Admin: get subscriptions by status (active, pending, expired, cancelled)
+  @Get('admin/status/:status')
+  async getSubscriptionsByStatus(@Param('status') status: string) {
+    return this.subscriptionsService.getSubscriptionsByStatus(status);
+  }
+
   // Admin: get all pending invoices
   @Get('admin/invoices/pending')
-//   @UseGuards(RolesGuard)
-//   @Roles('admin')
   async getPendingInvoices() {
     return this.subscriptionsService.getPendingInvoices();
   }
 
-  // Admin: verify invoice (approve/reject payment slip)
+  // Admin: verify invoice (approve/reject)
   @Patch('admin/invoice/:id/verify')
-//   @UseGuards(RolesGuard)
-//   @Roles('admin')
   async verifyInvoice(
     @Param('id') invoiceId: number,
     @Body() body: { status: 'paid' | 'rejected' },
@@ -76,3 +84,6 @@ export class SubscriptionsController {
     return this.subscriptionsService.verifyInvoice(invoiceId, body.status);
   }
 }
+
+
+
