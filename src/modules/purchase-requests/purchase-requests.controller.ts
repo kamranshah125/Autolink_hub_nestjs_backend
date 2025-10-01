@@ -45,6 +45,17 @@ export class PurchaseRequestsController {
     return this.service.update(Number(id), dto);
   }
 
+
+    // Admin: verify invoice (approve/reject)
+  @Patch('admin/invoice/:id/verify')
+  async verifyInvoice(
+    @Param('id') invoiceId: number,
+    @Body() body: { status: 'paid' | 'rejected' },
+  ) {
+    return this.service.verifyInvoice(invoiceId, body.status);
+  }
+
+
   // Delete request (optional)
   @Delete(':id')
   remove(@Param('id') id: number) {

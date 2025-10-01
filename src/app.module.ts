@@ -10,6 +10,7 @@ import { UsersModule } from './modules/users/users.module';
 import { SubscriptionsModule } from './modules/subscriptions/subscriptions.module';
 import { DealersModule } from './modules/dealers/dealers.module';
 import { PurchaseRequestsModule } from './modules/purchase-requests/purchase-requests.module';
+import { LogisticsModule } from './modules/logistics/logistics.module';
  
  @Module({
   imports: [
@@ -28,7 +29,7 @@ import { PurchaseRequestsModule } from './modules/purchase-requests/purchase-req
     SubscriptionsModule,
     DealersModule,
     PurchaseRequestsModule,
-
+    LogisticsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -5,7 +5,8 @@ import { SubscriptionPlan } from './entities/subscription-plans.entity';
 import { Subscription } from './entities/subscription.entity';
 import { Invoice } from './entities/invoice.entity';
 import { CreateSubscriptionDto } from '@/common/dto/create-subscription.dto';
- 
+import { PurchaseRequest } from '../purchase-requests/entities/purchase_request.entity';
+
 @Injectable()
 export class SubscriptionsService {
   constructor(
@@ -17,6 +18,9 @@ export class SubscriptionsService {
 
     @InjectRepository(Invoice)
     private readonly invoicesRepo: Repository<Invoice>,
+
+    @InjectRepository(PurchaseRequest)
+    private readonly purchaseRepo: Repository<PurchaseRequest>,
   ) {}
 
   // ===============================
@@ -82,7 +86,7 @@ export class SubscriptionsService {
     });
   }
 
-   // ===============================
+  // ===============================
   // 📌 Admin Side
   // ===============================
 
@@ -95,7 +99,7 @@ export class SubscriptionsService {
 
   async getSubscriptionsByStatus(status: string) {
     return this.subsRepo.find({
-      where: { status:status as any },
+      where: { status: status as any },
       relations: ['plan'],
       order: { startDate: 'DESC' },
     });
@@ -108,21 +112,44 @@ export class SubscriptionsService {
     });
   }
 
+  // async verifyInvoice(invoiceId: number, status: 'paid' | 'rejected') {
+  //   const invoice = await this.invoicesRepo.findOne({
+  //     where: { id: invoiceId },
+  //     relations: ['subscription'],
+  //   });
+  //   if (!invoice) throw new NotFoundException('Invoice not found');
+
+  //   invoice.status = status;
+  //   await this.invoicesRepo.save(invoice);
+
+  //   if (status === 'paid' && invoice.subscription) {
+  //     invoice.subscription.status = 'active';
+  //     await this.subsRepo.save(invoice.subscription);
+  //   }
+
+  //   return invoice;
+  // }
   async verifyInvoice(invoiceId: number, status: 'paid' | 'rejected') {
     const invoice = await this.invoicesRepo.findOne({
       where: { id: invoiceId },
       relations: ['subscription'],
     });
-    if (!invoice) throw new NotFoundException('Invoice not found');
+    if (!invoice || !invoice.subscription) {
+      throw new NotFoundException('Invoice not found or not linked to a subscription');
+    }
 
     invoice.status = status;
     await this.invoicesRepo.save(invoice);
 
-    if (status === 'paid' && invoice.subscription) {
+    if (status === 'paid') {
       invoice.subscription.status = 'active';
       await this.subsRepo.save(invoice.subscription);
     }
 
-    return invoice;
+    return await this.invoicesRepo.findOne({
+      where: { id: invoice.id },
+      relations: ['subscription'],
+    });
+
   }
 }

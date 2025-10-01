@@ -1,5 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
-import { Subscription } from "./subscription.entity";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { Subscription } from './subscription.entity';
+import { PurchaseRequest } from '@/modules/purchase-requests/entities/purchase_request.entity';
 
 @Entity('invoices')
 export class Invoice {
@@ -12,6 +13,9 @@ export class Invoice {
   @ManyToOne(() => Subscription, { nullable: true })
   subscription: Subscription;
 
+  @ManyToOne(() => PurchaseRequest, (pr) => pr.invoice, { nullable: true })
+  purchaseRequest: PurchaseRequest;
+
   @Column('decimal')
   amount: number;
 
@@ -22,5 +26,5 @@ export class Invoice {
   dueDate: Date;
 
   @Column({ nullable: true })
-  paymentProofUrl: string; // bank slip upload
+  paymentProofUrl: string;
 }
