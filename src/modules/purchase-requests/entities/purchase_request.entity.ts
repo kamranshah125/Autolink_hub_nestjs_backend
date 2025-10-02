@@ -5,9 +5,12 @@ import {
   OneToOne,
   CreateDateColumn,
   UpdateDateColumn,
+  JoinColumn,
+  ManyToOne,
 } from 'typeorm';
 // import { User } from '@/modules/users/user.entity'; // assuming tumhare paas user module hai 
 import { Invoice } from '@/modules/subscriptions/entities/invoice.entity';
+import { User } from '@/modules/users/entities/user.entity';
  
 @Entity('purchase_requests')
 export class PurchaseRequest {
@@ -43,4 +46,8 @@ export class PurchaseRequest {
   
   @OneToOne(() => Invoice, (invoice) => invoice.purchaseRequest)
   invoice: Invoice;
+
+   @ManyToOne(() => User, (user) => user.purchaseRequests, { eager: true })
+  @JoinColumn({ name: 'userId' })
+  user: User;
 }

@@ -7,7 +7,7 @@ import { AddTrackingDto } from '@/common/dto/add-tracking.dto';
 @Controller('logistics')
 export class LogisticsController {
   constructor(private readonly logisticsService: LogisticsService) {}
-
+  
   @Post()
   async create(@Body() dto: CreateLogisticsDto) {
     return this.logisticsService.create(dto);

@@ -1,5 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, OneToMany } from 'typeorm';
 import { DealerProfile } from './dealer-profile.entity';
+import { Invoice } from '@/modules/subscriptions/entities/invoice.entity';
+import { PurchaseRequest } from '@/modules/purchase-requests/entities/purchase_request.entity';
 
 export type UserRole = 'admin' | 'dealer' | 'sub-user';
 
@@ -31,4 +33,10 @@ emailVerificationExpires: Date | null;
 
   @OneToOne(() => DealerProfile, (profile) => profile.user, { cascade: true })
   dealerProfile: DealerProfile;
+
+  @OneToMany(() => Invoice, (invoice) => invoice.user)
+invoices: Invoice[];
+
+@OneToMany(() => PurchaseRequest, (pr) => pr.user)
+purchaseRequests: PurchaseRequest[];
 }

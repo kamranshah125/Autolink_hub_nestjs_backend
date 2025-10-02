@@ -11,6 +11,9 @@ import { SubscriptionsModule } from './modules/subscriptions/subscriptions.modul
 import { DealersModule } from './modules/dealers/dealers.module';
 import { PurchaseRequestsModule } from './modules/purchase-requests/purchase-requests.module';
 import { LogisticsModule } from './modules/logistics/logistics.module';
+import { AdminDashboardModule } from './modules/admin-dashboard/admin-dashboard.module';
+import { DealerDashboardController } from './modules/dealer-dashboard/dealer-dashboard.controller';
+import { DealerDashboardModule } from './modules/dealer-dashboard/dealer-dashboard.module';
  
  @Module({
   imports: [
@@ -30,6 +33,8 @@ import { LogisticsModule } from './modules/logistics/logistics.module';
     DealersModule,
     PurchaseRequestsModule,
     LogisticsModule,
+    AdminDashboardModule,
+    DealerDashboardModule,
   ],
   controllers: [AppController],
   providers: [AppService],
