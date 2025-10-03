@@ -14,6 +14,13 @@ import type { Response } from 'express';
 @Controller('dealers')
 export class DealersController {
   constructor(private readonly dealersService: DealersService) {}
+    // ✅ Admin: Get dealers by status
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
+  @Get()
+  async getDealersByStatus(@Query('status') status?: string) {
+    return this.dealersService.findByStatus(status);
+  }
 
   // ✅ Admin: Get all dealers with docs
   @UseGuards(JwtAuthGuard, RolesGuard)
@@ -50,7 +57,7 @@ export class DealersController {
   async uploadKyc(
     @Param('id') dealerId: number,
     @UploadedFile() file: Express.Multer.File,
-    @Body('documentType') documentType: string, // ✅ new field
+    @Body('documentType') documentType: string, 
   ) {
     return this.dealersService.saveKycDocument(
       dealerId,
